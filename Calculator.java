@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-class Calculator extends JFrame{
+public class Calculator extends JFrame{
     private JPanel p = new JPanel(new GridLayout(2,5,3,3));
     private String btnText[] = {"+", "-", "*", "/", "OK"};
     private String tText[] = {"", "", "", "=", ""};
@@ -81,7 +81,7 @@ class Calculator extends JFrame{
         new Calculator("calculator");
     }
     //check if a str contains only digits
-    public static boolean isNumeric(String str){    
+    public boolean isNumeric(String str){    
         for (int i = str.length();--i>=0;){
             if (!Character.isDigit(str.charAt(i))){
                 return false;
