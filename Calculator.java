@@ -41,11 +41,11 @@ public class Calculator extends JFrame{
                 //check if inputfield has been filled
                 if(text[0].getText().equals("") || text[1].getText().equals("") ||
                     text[2].getText().equals("")) {
-                    JOptionPane.showConfirmDialog(null, "输入不能为空", "错误", JOptionPane.DEFAULT_OPTION);
+                    JOptionPane.showConfirmDialog(null, "No Input!", "Error", JOptionPane.DEFAULT_OPTION);
                 }
                 //check if input is digit
                 else if(!isNumeric(text[0].getText()) || !isNumeric(text[2].getText())){
-                    JOptionPane.showConfirmDialog(null, "输入必须为数字", "错误", JOptionPane.DEFAULT_OPTION);
+                    JOptionPane.showConfirmDialog(null, "Input can only be digits", "Error", JOptionPane.DEFAULT_OPTION);
                 }
                 //calculate
                 else{
