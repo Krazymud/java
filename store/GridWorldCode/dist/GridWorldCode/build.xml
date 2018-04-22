@@ -3,6 +3,8 @@
    <property file="build.properties"/>
 
    <property name="framework.dir" value="framework"/>  
+   <property name="code" value="projects/firstProject"/>
+   <property name="lib" value="lib"/>
    <property name="projects.dir" value="projects"/>  
    <property name="build.dir" value="build"/>  
    <property name="dist.dir" value="dist"/>  
@@ -12,10 +14,17 @@
    <property name="framework.resources" 
              value="${framework.dir}/info/gridworld/gui/WorldFrameResources.properties" />
    
+   <path id="classpath">
+      <fileset dir=".">
+         <include name="**/*.jar"/>
+      </fileset>
+   </path>
+
    <target name="init">
       <tstamp>
          <format property="version.date" pattern="yyyy-MM-dd" locale="en"/>
       </tstamp>
+      <mkdir dir="${lib}"/>
       <mkdir dir="${build.dir}"/>
       <mkdir dir="${dist.dir}"/>
       <mkdir dir="${dist.zip.dir}"/>
@@ -84,8 +93,16 @@
       </zip>
    </target>
 
-   <target name="run" depends="compile">
-      
+   <target name="recompile" depends="init">
+      <javac srcdir="${code}" destdir="${build.dir}"/>
+   </target>
+   <target name="rejar" depends="recompile">
+      <jar jarfile="${lib}/gridworld.jar" basedir="${build.dir}"/>
+   </target>
+   <target name="run" depends="rejar">
+      <java classname="BugRunner" fork="true">
+         <classpath refid="classpath"/>
+      </java>
    </target>
 
    <target name="clean">
