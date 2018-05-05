@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_gridworldcode" default="compile.module.gridworldcode">
+  <dirname property="module.gridworldcode.basedir" file="${ant.file.module_gridworldcode}"/>
+  
+  <property name="module.jdk.home.gridworldcode" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.gridworldcode" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.gridworldcode" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.gridworldcode" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="gridworldcode.output.dir" value="${module.gridworldcode.basedir}/out/production/GridWorldCode"/>
+  <property name="gridworldcode.testoutput.dir" value="${module.gridworldcode.basedir}/out/test/GridWorldCode"/>
+  
+  <path id="gridworldcode.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gridworldcode.module.production.classpath">
+    <path refid="${module.jdk.classpath.gridworldcode}"/>
+    <path refid="library.gridworld.classpath"/>
+  </path>
+  
+  <path id="gridworldcode.runtime.production.module.classpath">
+    <pathelement location="${gridworldcode.output.dir}"/>
+    <path refid="library.gridworld.classpath"/>
+  </path>
+  
+  <path id="gridworldcode.module.classpath">
+    <path refid="${module.jdk.classpath.gridworldcode}"/>
+    <pathelement location="${gridworldcode.output.dir}"/>
+    <path refid="library.gridworld.classpath"/>
+  </path>
+  
+  <path id="gridworldcode.runtime.module.classpath">
+    <pathelement location="${gridworldcode.testoutput.dir}"/>
+    <pathelement location="${gridworldcode.output.dir}"/>
+    <path refid="library.gridworld.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gridworldcode">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  <patternset id="excluded.from.module.projects">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gridworldcode">
+    <patternset refid="excluded.from.module.gridworldcode"/>
+    <patternset refid="excluded.from.module.projects"/>
+  </patternset>
+  
+  <path id="gridworldcode.module.sourcepath">
+    <dirset dir="${module.gridworldcode.basedir}">
+      <include name="framework"/>
+    </dirset>
+    <dirset dir="${module.gridworldcode.basedir}/projects">
+      <include name="MazeBug"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gridworldcode" depends="compile.module.gridworldcode.production,compile.module.gridworldcode.tests" description="Compile modules GridWorldCode"/>
+  
+  <target name="compile.module.gridworldcode.production" depends="register.custom.compilers" description="Compile modules GridWorldCode; production classes">
+    <mkdir dir="${gridworldcode.output.dir}"/>
+    <javac2 destdir="${gridworldcode.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gridworldcode}/javac">
+      <compilerarg line="${compiler.args.gridworldcode}"/>
+      <bootclasspath refid="gridworldcode.module.bootclasspath"/>
+      <classpath refid="gridworldcode.module.production.classpath"/>
+      <src refid="gridworldcode.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gridworldcode"/>
+    </javac2>
+    
+    <copy todir="${gridworldcode.output.dir}">
+      <fileset dir="${module.gridworldcode.basedir}/framework">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.gridworldcode.basedir}/projects/MazeBug">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gridworldcode.tests" depends="register.custom.compilers,compile.module.gridworldcode.production" description="compile modules GridWorldCode; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gridworldcode" description="cleanup module">
+    <delete dir="${gridworldcode.output.dir}"/>
+    <delete dir="${gridworldcode.testoutput.dir}"/>
+  </target>
+</project>
